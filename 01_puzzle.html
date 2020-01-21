@@ -1,0 +1,73 @@
+<meta charset="utf-8">
+<script>
+
+    /*
+    Игра в загадки
+    a. Загадать загадку. Если ответ верен – поздравить пользователя. Затем сообщить, что игра окончена.
+    b. Если ответ неверный – написать пользователю, что он не угадал.
+    c. Добавить еще 3 загадки. Подсчитать количество правильных ответов, сообщить пользователю.
+    d. В качестве верного ответа принимать несколько вариантов ответов. Например, «Стул», «стул», «табуретка» и так далее.
+    */
+
+    var NUMBER_OF_PUZZLES = 4;
+    var PUZZLE_01 = "Сидит девица в темнице, а коса на улице. Что это такое?";
+    var PUZZLE_02 = "Друг зверей и друг детей\nДобрый доктор ...";
+    var PUZZLE_03 = "У него огромный рот,\nОн зовется ...";
+    var PUZZLE_04 = "Белым снегом всё одето -\nЗначит, наступает ...";
+
+    var winCnt = 0; // счет побед
+    var currentPuzzle; // текущая загадка - строка
+    var a1, a2, a3, a4, a5; // Варианты правильных ответов - строки
+    var msg = "" // сообщение для пользователя
+
+    for (var game = 0; game < 4; ++game) {
+        
+        //Инициализация текущей загадки и правильных вариантов ответа
+        switch (game) {
+            case 0:
+                currentPuzzle = PUZZLE_01;
+                a1 = "морковь";
+                a2 = a3 = a4 = a5 = "морковка";
+                break;
+            case 1:
+                currentPuzzle = PUZZLE_02;
+                a1 = a2 = a3 = a4 = a5 = "Айболит";
+                break;
+            case 2:
+                currentPuzzle = PUZZLE_03;
+                a1 = "бегемот";
+                a2  = a3 = a4 = a5 = "гиппопотам";
+                break;
+            case 3:
+                currentPuzzle = PUZZLE_04;
+                a1 = a2 = a3 = a4 = a5 = "зима";
+                break;
+        }
+
+        var guess = prompt(currentPuzzle).toLowerCase();
+
+        if (guess == a1.toLowerCase() || guess == a2.toLowerCase() || guess == a3.toLowerCase()||
+            guess == a4.toLowerCase() || guess == a5.toLowerCase()) {
+            msg = "Правильно!" + (game < 3 ? " Продолжаем!" : "");
+            ++ winCnt;
+        } else {
+            msg = guess.toUpperCase() +
+                  " -- не верно. Правильный ответ: " +
+                  a1.toUpperCase() + "." +
+                  (game < 3 ? " Продолжаем игру." : "");
+        }
+        alert(msg);
+    }
+
+    //определение правильной грамматической формы слова "победа"
+    var correctForm = "побед";
+    if (winCnt == 1) {
+        correctForm = "победа";
+    }
+    else if (2 <= winCnt && winCnt <= 4) {
+        correctForm = "победы";
+    }
+
+    document.write("Игра окончена, у вас " + winCnt + " " + correctForm + " из " + NUMBER_OF_PUZZLES);
+
+</script>
