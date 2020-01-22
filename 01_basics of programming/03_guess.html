@@ -1,0 +1,49 @@
+<meta charset="utf-8">
+<script>
+
+    /*
+        Сделать игру с двумя игроками и бесконечным числом попыток.
+        Сделать возможность выйти из игры по желанию одного из игроков.
+    */
+
+    var win_1 = 0, win_2 = 0;
+    var activePlayer = 1;
+    var guess = "";
+
+    while (guess.toString().toLowerCase() != "q") {
+        var secretNumber = parseInt(Math.random() * 100);
+        alert("Загадано число от 0 до 100. Угадайте его.");
+
+        while (true) {
+            guess = prompt("Игрок " + activePlayer + ": \n Для завершения игры введите 'q'");
+
+            if (guess.toLowerCase() == "q") {
+                document.write("Игрок " + activePlayer + " завершил игру<br>");
+                break;
+            }
+
+            guess = parseInt(guess);
+            if (guess != secretNumber) {
+                activePlayer = (activePlayer == 1 ? 2 : 1); // Переход хода
+                var msg = (guess > secretNumber) ? "Меньше" : "Больше";
+                alert(msg + ". Переход хода!");
+                document.write("Игрок " + activePlayer + ": " + guess + " -- " + msg + " -- переход хода.<br>");
+            } else {
+                alert("Игрок " + activePlayer + " выиграл! \nПродолжаем игру!");
+                if (activePlayer == 1) {
+                    ++win_1;
+                } else {
+                    ++win_2;
+                }
+                document.write("Игрок " + activePlayer + ": " + guess + " -- ВЫИГРАЛ -- счет: " +
+                               win_1 + "-" + win_2 + "<br><br>");
+                break;
+            }
+        }
+    }
+
+    document.write("----------------------------------------------<br>")
+    document.write("Игра завершена<br>");
+    document.write("Счет: ", win_1, "-", win_2);
+
+</script>
