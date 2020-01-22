@@ -6,9 +6,9 @@
         Сделать возможность выйти из игры по желанию одного из игроков.
     */
 
-    var win_1 = 0, win_2 = 0;
-    var activePlayer = 1;
-    var guess = "";
+    var win_1 = 0, win_2 = 0; // Счетчики побед игроков
+    var activePlayer = 1; // Номер игрока, чья очередь угадывать
+    var guess = ""; // Ответ игрока
 
     while (guess.toString().toLowerCase() != "q") {
         var secretNumber = parseInt(Math.random() * 100);
