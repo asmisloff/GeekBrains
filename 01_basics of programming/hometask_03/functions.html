@@ -1,0 +1,20 @@
+<meta charset="utf-8">
+<script>
+
+/*  
+    a.  Написать функцию, которая принимает в качестве параметра число n.
+        Результатом работы функции является массив из N элементов со значениями 1, 2, 3… n.
+*/
+
+function range(n) {
+    var arr = [];
+    for (var i = 1; i <= n; ++i) {
+        arr.push(i);
+    }
+    return arr;
+}
+
+//test
+document.write(range(-10));
+
+</script>
