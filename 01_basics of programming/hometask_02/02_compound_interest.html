@@ -10,7 +10,7 @@
     var interest = parseFloat(prompt("Процентная ставка по вкладу", 5)) / 100.0;
     var term = parseInt(prompt("Срок депозита (полных лет)", "5"));
 
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= term; i++) {
         document.write("", i, " год --> ", (deposit *= (1 + interest)).toFixed(), "<br>");
     }
 
