@@ -1,12 +1,6 @@
 <meta charset="utf-8">
 <script>
-
-/*  
-    a.  Написать функцию, которая принимает в качестве параметра число n.
-        Результатом работы функции является массив из N элементов со значениями 1, 2, 3… n.
-*/
-
-function range(n) {
+function range(n) { //a
     var arr = [];
     for (var i = 1; i <= n; ++i) {
         arr.push(i);
@@ -14,7 +8,62 @@ function range(n) {
     return arr;
 }
 
+function sum(arr) { //b
+    if (arr.length == 0) {
+        return NaN;
+    }
+    var _sum = 0;
+    for (var i = 0; i < arr.length; ++i) {
+        _sum += arr[i];
+    }
+    return _sum;
+}
+
+function max(arr) { //c
+    if (arr.length == 0) {
+        return NaN;
+    }
+    var _max = arr[0];
+    for (var i = 1; i < arr.length; ++i) {
+        if (arr[i] > _max) {
+            _max = arr[i];
+        }
+    }
+    return _max;
+}
+
+function min(arr) {
+    if (arr.length == 0) {
+        return NaN;
+    }
+    var _min = arr[0];
+    for (var i = 1; i < arr.length; ++i) {
+        if (arr[i] < _min) {
+            _min = arr[i];
+        }
+    }
+    return _min;
+}
+
+function filterEvens(arr) {
+    if (arr.length == 0) {
+        return NaN;
+    }
+    var evens = [];
+    for (var i = 0; i < arr.length; i++) {
+        var n = arr[i];
+        if (n % 2 == 0) {
+            evens.push(n);
+        }
+    }
+    return evens;
+}
+
 //test
-document.write(range(-10));
+document.write("a: range(10) --> " + range(10));
+document.write("<br>b: sum(range(10)) --> ", sum(range(10)));
+document.write("<br>c: max(range(10)) --> ", max(range(10)));
+document.write("<br>d: min(range(10)) --> ", min(range(10)));
+document.write("<br>f: filterEvens(range(10)) --> ", filterEvens(range(10)));
 
 </script>
