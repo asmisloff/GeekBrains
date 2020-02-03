@@ -1,14 +1,9 @@
-import com.sun.nio.sctp.AbstractNotificationHandler;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
-import java.util.Random;
-import static javax.swing.JOptionPane.showMessageDialog;
 
 public class App {
 
@@ -30,7 +25,7 @@ public class App {
 //                        String.format("x = %d, y = %d; dropTop = %f, dropLeft = %f, dropRight = %f, dropBottom = %f",
 //                                x, y, dropTop, dropLeft, dropRight, dropBottom));
                 if (isDrop) {
-                    gameField.dropTop = -200;
+                    gameField.dropTop = -100;
                     gameField.dropLeft = (int)(Math.random() * (gameField.getWidth() - gameField.drop.getWidth(null)));
                     gameField.velocity += 20;
                     w.incScore();
@@ -58,9 +53,6 @@ public class App {
             //onRepaint(g);
         }
 
-        void onRepaint(Graphics g) {
-        }
-
         public void incScore() {
             setTitle("Score: " + ++score);
         }
@@ -74,18 +66,21 @@ public class App {
             background = ImageIO.read(App.class.getResourceAsStream("background.png"));
             gameOver = ImageIO.read(GameWindow.class.getResourceAsStream("game_over.png"));
             drop = ImageIO.read(App.class.getResourceAsStream("drop.png"));
+            setDoubleBuffered(true);
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(background, 1, 1,null);
-            dropDown((int)dropLeft, velocity, g);
+            dropDown(dropLeft, velocity, g);
             if (dropTop > getParent().getHeight()) {
                 g.drawImage(gameOver, 280, 120, null);
+                repaint();
                 return;
             }
-            repaint();
+
+            repaint(dropLeft-20, dropTop-20, drop.getWidth(null) + 40, drop.getHeight(null) + 40);
         }
 
         void dropDown(int x0, int velocity, Graphics g) {
@@ -95,18 +90,13 @@ public class App {
             g.drawImage(drop, x0, dropTop += (int)(velocity * dt), null);
         }
 
-        void dropDiag(int x0, int y0, int vx, int vy, Graphics g) {
-            double dt = (System.nanoTime() - lastFrameTime) * 1e-9;
-            g.drawImage(drop, x0 + (int)(vx * dt), dropTop = (y0 + (int)(vy * dt)), null);
-        }
-
         Image background;
         Image gameOver;
         Image drop;
-        double dropLeft = 100.0;
-        int dropTop = -200;
+        int dropLeft = 100;
+        int dropTop = -100;
         long lastFrameTime = System.nanoTime();
-        int velocity = 50;
+        int velocity = 200;
     }
 
 }
