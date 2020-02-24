@@ -199,11 +199,51 @@ public class Main {
         }
     }
     
+    static char[] getSecondaryDiagAt(int row, int col) {
+        int sz = row - col + 1;
+        char[] seq = new char[sz];
+        for (int i = 0; i < sz; i++) {
+            seq[i] = map[row--][col++];
+        }
+        return seq;
+    }
+    
+    static void traverseSecondaryDiagAt(int row, int col) {
+        char[] seq = getSecondaryDiagAt(row,col);
+        int[] prompt = checkSequence(seq, DOTS_TO_WIN);
+    
+        if (prompt[0] == W_AI_WIN) {
+            dpUpdateDisposition(W_AI_WIN, -1, -1);
+        } else if (prompt[0] == W_HUMAN_WIN) {
+            dpUpdateDisposition(W_HUMAN_WIN, -1, -1);
+        } else if (prompt[0] == W_CAN_WIN && dpWhat() < W_CAN_WIN) {
+            dpUpdateDisposition(W_CAN_WIN, row - prompt[1], col + prompt[1]);
+        } else if (prompt[0] == W_DANGER && dpWhat() < W_DANGER) {
+            dpUpdateDisposition(W_DANGER, row - prompt[1], col + prompt[1]);
+        } else if (prompt[0] == W_NONE && dpWhat() < W_NONE) {
+            dpUpdateDisposition(W_NONE, -1, -1);
+        }
+    }
+    
+    static void traverseSecondaryDiags() {
+        int col = 0;
+        int row = DOTS_TO_WIN - 1;
+        
+        for (int i = 0; i < 2 * (SIZE - DOTS_TO_WIN) + 1; ++i, ++row) {
+            if (row > SIZE - 1) {
+                row = SIZE - 1;
+                ++col;
+            }
+            traverseSecondaryDiagAt(row, col);
+        }
+    }
+    
     static void traverseMap() {
         dpUpdateDisposition(-1,-1,-1);
         traverseRows();
         traverseColumns();
         traversMainDiags();
+        traverseSecondaryDiags();
     }
     
     static void initMap() {
