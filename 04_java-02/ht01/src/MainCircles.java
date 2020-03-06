@@ -6,6 +6,7 @@ public class MainCircles extends JFrame {
     private static final int POS_Y = 200;
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 600;
+    private Background background;
 
     private Sprite[] sprites = new Sprite[10];
 
@@ -33,6 +34,7 @@ public class MainCircles extends JFrame {
         for (int i = 0; i < sprites.length; i++) {
             sprites[i] = new Ball();
         }
+        background = new Background(1f, 1f,1f,0.5f,1f,0.5f);
     }
 
     public void onCanvasRepainted(MainCanvas canvas, Graphics g, float deltaTime) {
@@ -44,6 +46,9 @@ public class MainCircles extends JFrame {
         for (int i = 0; i < sprites.length; i++) {
             sprites[i].update(canvas, deltaTime);
         }
+
+        background.update(deltaTime);
+        canvas.setBackground(background.getColor());
     }
 
     private void render(MainCanvas canvas, Graphics g) {
