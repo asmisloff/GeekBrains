@@ -4,8 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
-public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
+public class ClientGUI extends JFrame implements ActionListener, KeyListener, Thread.UncaughtExceptionHandler {
+
+    private static final String LOG_FILE_PATH = "history.log";
 
     private static final int WIDTH = 400;
     private static final int HEIGHT = 300;
@@ -48,7 +54,10 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         JScrollPane scrollLog = new JScrollPane(log);
         JScrollPane scrollUsers = new JScrollPane(userList);
         scrollUsers.setPreferredSize(new Dimension(100, 0));
+
         cbAlwaysOnTop.addActionListener(this);
+        btnSend.addActionListener(this);
+        tfMessage.addKeyListener(this);
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
@@ -68,11 +77,34 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         setVisible(true);
     }
 
+    private void onMsgSent() {
+        String msg = tfMessage.getText() + '\n';
+
+        if (msg.equals("\n")) {
+            return;
+        }
+
+        log.append(msg);
+        tfMessage.setText("");
+
+        /*Мне не очень нравится каждый раз создавать новый FileWriter, но как избавиться от этого без
+        * усложнения кода не могу придумать.*/
+        try (FileWriter w = new FileWriter(LOG_FILE_PATH, true)) {
+            w.write(msg);
+            w.flush();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+            //Здесь, наверное, имеет смысл закэшировать сообщение, а в следующем вызове, если проблема доступа исчезнет, отправить его в файл.
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
+        } else if (src == btnSend) {
+            onMsgSent();
         }
         else
             throw new RuntimeException("Unknown source: " + src);
@@ -88,5 +120,22 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
                 e.getMessage() + "\n\t" + ste[0];
         JOptionPane.showMessageDialog(null, msg, "Exception", JOptionPane.ERROR_MESSAGE);
         System.exit(1);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getSource() == tfMessage && e.getKeyCode() == KeyEvent.VK_ENTER) {
+            onMsgSent();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }
