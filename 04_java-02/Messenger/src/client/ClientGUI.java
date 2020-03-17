@@ -9,7 +9,7 @@ import java.awt.event.KeyListener;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ClientGUI extends JFrame implements ActionListener, KeyListener, Thread.UncaughtExceptionHandler {
+public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
 
     private static final String LOG_FILE_PATH = "history.log";
 
@@ -57,7 +57,7 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
 
         cbAlwaysOnTop.addActionListener(this);
         btnSend.addActionListener(this);
-        tfMessage.addKeyListener(this);
+        tfMessage.addActionListener(this);
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
@@ -106,6 +106,9 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
         } else if (src == btnSend) {
             onMsgSent();
         }
+        else if (src == tfMessage) {
+            onMsgSent();
+        }
         else
             throw new RuntimeException("Unknown source: " + src);
     }
@@ -122,20 +125,4 @@ public class ClientGUI extends JFrame implements ActionListener, KeyListener, Th
         System.exit(1);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getSource() == tfMessage && e.getKeyCode() == KeyEvent.VK_ENTER) {
-            onMsgSent();
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }
