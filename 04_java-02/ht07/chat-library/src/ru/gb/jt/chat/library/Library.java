@@ -38,4 +38,23 @@ public class Library {
                 DELIMITER + src + DELIMITER + message;
     }
 
+    public static String parse(String msg) {
+        String[] fields = msg.split(DELIMITER);
+        switch (fields[0]) {
+            case AUTH_REQUEST:
+                return "Authentication request";
+            case AUTH_ACCEPT:
+                return String.format("You are authorized, %s, wellcome.\n", fields[1]);
+            case AUTH_DENIED:
+                return "Access denied";
+            case TYPE_BROADCAST:
+                String delimiter = "--------------------------------";
+                return String.format("Broadcast message from %s (%s)\n%s\n%s\n%s",
+                        fields[2].toString(), fields[1], delimiter, fields[3], delimiter);
+            case MSG_FORMAT_ERROR:
+                return String.format("Invalid message: %s", fields[1]);
+            default:
+                return msg;
+        }
+    }
 }
