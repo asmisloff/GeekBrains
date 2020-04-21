@@ -1,5 +1,6 @@
 package ru.gb.jt.chat.server.gui;
 
+import org.apache.log4j.LogManager;
 import ru.gb.jt.chat.server.core.ChatServer;
 import ru.gb.jt.chat.server.core.ChatServerListener;
 
@@ -7,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import org.apache.log4j.Logger;
 
 public class ServerGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler, ChatServerListener {
     private static final int POS_X = 800;
@@ -20,6 +23,7 @@ public class ServerGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JPanel panelTop = new JPanel(new GridLayout(1, 2));
     private final JTextArea log = new JTextArea();
 
+    private static final Logger LOGGER = LogManager.getLogger(ServerGUI.class.getName());
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -81,5 +85,7 @@ public class ServerGUI extends JFrame implements ActionListener, Thread.Uncaught
             log.append(msg + "\n");
             log.setCaretPosition(log.getDocument().getLength());
         });
+
+        LOGGER.info(msg);
     }
 }
